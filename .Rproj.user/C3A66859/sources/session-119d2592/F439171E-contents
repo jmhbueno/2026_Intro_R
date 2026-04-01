@@ -787,7 +787,7 @@ str(df)
 imdb1000 <- read.csv("imdb_top_1000.csv",encoding = "UTF-8")
 
 # Codigo abaixo para limpar variáveis de texto
-# imdb1000 <- imdb1000[,-c(1,8)]
+imdb1000 <- imdb1000[,-c(1,8)]
 
 # Separar a variável gênero em três variáveis (Genre1, Genre2 e Genre3)
 imdb1000 <- 
