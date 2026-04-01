@@ -1,0 +1,22 @@
+---
+title: "Untitled"
+format: html
+---
+
+```{r}
+paste("mauricio",1:100,"-")
+```
+
+```{r}
+df1 <- data.frame(nome = c("Maurício", "Iracema", "Francisco", "Chicó"),
+                  especie = c('humano','humano','humano','canino'))
+
+# nome <- c("Maurício", "Iracema", "Francisco", "Chicó")
+
+
+
+df1 <- cbind(nome,especie)
+
+df1$
+```
+

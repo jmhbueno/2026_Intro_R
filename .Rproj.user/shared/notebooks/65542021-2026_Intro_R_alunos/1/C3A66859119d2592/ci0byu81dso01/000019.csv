@@ -1,0 +1,3 @@
+"0",""
+"0","# Selecionar somente as linhas dos participantes do sexo masculino com renda_total maior ou igual a 2500 reais."
+"0","df[df$sexo == ""m"" & df$renda_total >= 2500, ]"

@@ -1,0 +1,3 @@
+"0",""
+"0","# se quisermos selecionar as colunas id, idade e renda_total"
+"0","df[ ,c(1,3,7)]"

@@ -1,0 +1,5 @@
+"0","#| label: filtrar"
+"0",""
+"0",""
+"0","# Selecionar somente as linhas dos participantes do sexo masculino"
+"0","df[df$sexo == ""m"",  ]"

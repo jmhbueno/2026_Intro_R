@@ -1,0 +1,750 @@
+---
+title: "Introdução ao R - 2026.1"
+subtitle: "Disciplina: Metodologia em Pesquisa Quantitiva" 
+date: "`r Sys.Date()`"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Sumário"
+    toc-expand: true
+    toc-location: left
+  docx: 
+    toc: true
+    toc-depth: 3
+    prefer-html: true
+execute: 
+  eval: true
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+# Introdução
+
+O R é uma **linguagem** e um **ambiente** de programação dentro do qual se pode fazer uma infinidade de operações estatísticas e de processamento de dados.
+Foi concebido para ser colaborativo e gratuito.
+Qualquer pessoa pode criar uma função, ou um conjunto de funções (pacote) e disponibilizar a outros usuários...
+**gratuitamente**!
+Visite o [site](https://cran.r-project.org/) do R e baixe o programa para instalação em seu computador.
+
+Em associação ao R, costuma-se usar o RStudio (baixe e instale clicando [aqui](https://posit.co/download/rstudio-desktop/)), que facilita o uso do R ao disponibilizar um conjunto de quatro janelas que funcionam para as seguintes funções:
+
+1)  Digitação de texto (superior, à esquerda),
+2)  Display de resultados (console) (inferior, à esquerda),
+3)  Visualizador de objetos (arquivos) gerados ao realizar um trabalho (superior, à direita),
+4)  Informações gerais: arquivos, plotagens, pacotes instalados, help, e visualizador de imagens (inferior, à direita).
+
+## Criação de um projeto
+
+-   File + New Project + New Directory (ou Existing Directory) +
+-   Directory Name (Escolha um nome para o diretório) +
+-   Use o Browse para localizar o diretório principal onde pretende criar o seu novo diretório +
+-   Create Project
+
+Para a digitação dos comandos, deve-se abrir um novo **Script** ou um **Quarto Document**.
+
+Abre-se um novo **script** com a seguinte linha de comando: `File + New File + R Script`, cujo atalho é `CTRL+SHIFT+N`.
+
+Abre-se um novo **Quarto Document** com a seguinte linha de comando: `File + New File + Quarto Document`.
+Fazendo isso, abrirá uma aba no quadrante superior esquerdo.
+
+O **Quarto Document** aceita linhas de texto e linhas de código, mas as linhas de código devem ser escritas dentro de um **chunk**, que se abre com o comando `CTRL+ALT+i`.
+
+```{r}
+# Essa é aparência do chunk
+```
+
+Já o **Script** é um grande **chunk** e não aceita linhas de texto.
+Por isso, preferimos usar o Quarto Document.
+
+Seja Script ou Quarto, você pode abrir quantas abas desejar.
+
+É possível rodar um comando no R de duas formas:
+
+-   Selecionando-o e clicando em "Run" na aba superior da área de digitação.
+-   Colocar o cursor em qualquer ponto da linha de comando e apertar `CTRL+ENTER`.
+
+## Instalação e ativação de pacotes
+
+Pense no R como um ambiente Windows.
+O Windows vem com algumas funções já pré-instaladas, como o bloco de notas, calculadora, etc.
+No entanto, se você quiser usar o leitor de PDF Adobe Reader, é necessário instalá-lo na sua máquina.
+E toda vez que você quiser usar o Adobe Reader será necessário ativá-lo (com dois cliques).
+
+No R também é assim, há pacotes que já vêm instalados (base), que são as funções mais básicas.
+Mas também há pacotes (inúmeros) que foram desenvolvidos para fins específicos (tal como o Adobe para o Windows, que foi desenvolvido para o fim específico de ler documentos PDF).
+Se você quiser usar um pacotes no R é necessário instalá-lo (uma vez só, tal como instalar o Adobe) e toda vez que for utilizá-lo, é nessário ativá-lo (tal como abrir o Adobe no Windows).
+
+As funções da base, que não precisam da instalação, são as operações matemáticas, plotagem, estatísticas básicas, entre outras.
+Outras funções estão em pacotes específicos, que precisam ser **instalados** e **ativados**.
+
+A instalação de novos pacotes é feita por meio do comando `install.packages("nome do pacote")`, e a **ativação dos pacotes** é feita por meio do comando `library(nome do pacote)`.
+
+Então, vamos instalar alguns pacotes que iremos utilizar durante o curso.
+
+```{r}
+#| label: Instação e Ativação de Pacotes
+
+
+install.packages("readr")
+install.packages("readxl")
+install.packages("haven")
+install.packages("tidyverse")
+install.packages("knitr")
+install.packages("psych")
+install.packages("expss")
+
+library(readr)
+library(readxl)
+library(haven)
+library(tidyverse)
+library(knitr)
+library(psych)
+library(expss)
+```
+
+Todo pacote do R tem uma documentação, com informações sobre as funções que o pacote contém.
+Uma forma de encontrar essa documentação é no site [rdocumentation.org](rdocumentation.org).
+
+As funções contidas dentro dos pacotes ser acessadas digitando-se o nome da função e parênteses.
+Por exemplo: `hist()` para gerar um histograma.
+
+As funções requerem argumentos, que são as informações necessárias para executar uma função.
+Por exemplo, para executar um histograma com a função `hist()`, precisamos informar pelo menos uma variável e o banco de dados onde essa variável se encontra.
+Nesse caso, usamos um banco de dados nativo do R
+
+Se quisermos acessar o help dessa função é só digitar um ponto de interrogação (?) antes do nome da função.
+Por exemplo, se quisermos a documentação da função **hist** da base do R, é só rodar o comando `?hist()`:
+
+```{r}
+hist(mtcars$qsec)
+
+# help da função histograma
+# ?hist() 
+```
+
+A documentação aparecerá na aba **Help** do quadrante de visualizações de informações do RStudio.
+
+## Operadores básicos
+
+Existem também alguns operadores importantes no R, que você deve conhecer:\
+Um deles é a seta para a esquerda, formada com o sinal de *menor* e o traço de *menos*: `<-`.
+
+Atalho para esse operador: pressione simultaneamente as teclas `ALT` e `-`
+
+Esse operador indica que o resultado de uma operação será salva em um **objeto**.
+
+Por exemplo: o comando abaixo diz "*faça a soma de 3 com 4 e guarde o resultado num objeto chamado **soma**"*.
+Esse objeto (soma) aparecerá no environment (quadrante superior direito do RStudio).
+
+OBS.: Esse comando pode ser substituído pelo sinal de igual (=).
+
+```{r}
+#| label: criar objetos
+
+soma <- 3 + 4
+```
+
+O comando "\#" permite que você faça comentários, sem que o R o entenda como comando.
+Por exemplo:
+
+```{r}
+#| label: comentários
+
+soma <- 3 + 4   # Esse comando calcula a soma de 3 + 4 e salva no objeto "soma"
+```
+
+O texto que aparece após a \# é ignorado pelo R.
+Esses são os comandos mais básicos.
+Há muitos outros atalhos...
+
+```{r}
+#| label: Lista de atalhos
+#| echo: false
+
+# atalhos <- data.frame(Atalho  =c("CTRL + ENTER",
+#                                  "CTRL + SHIFT + C",
+#                                  "CTRL + 1",
+#                                  "CTRL + 2",
+#                                  "SETA PARA CIMA (no console)",
+#                                  "CTRL + ALT + SETA PARA ESQUERDA OU DIREITA",
+#                                  "CTRL + SHIFT + ENTER",
+#                                  "CTRL + S",
+#                                  "CTRL + L",
+#                                  "ALT + SHIFT + K"),
+#                       "O que faz"=c("Executa a linha selecionada",
+#                                     "Comenta e descomenta a linha",
+#                                     "Passa o cursor para o script",
+#                                     "Passa o cursor para o console",
+#                                     "acessa o histórico de comandos anteriores",
+#                                     "Navega entre as abas de script abertas",
+#                                     "Executa o Script inteiro",
+#                                     "Salva o Script",
+#                                     "Limpa o console",
+#                                     "Ver a lista de atalhos"
+#                                     ))
+
+
+atalhos_principais <- 
+  data.frame(Atalho  =c("CTRL + ENTER",
+                                 "CTRL + SHIFT + C",
+                                 "CTRL + L",
+                                 "ALT + SHIFT + K"),
+                      "O que faz"=c("Executa a linha selecionada",
+                                    "Comenta e descomenta a linha",
+                                    "Limpa o console",
+                                    "Ver a lista de atalhos"
+                                    ))
+
+atalhos_principais
+```
+
+<!-- # Criar uma tabela em estilo APA -->
+
+```{r}
+#| eval: false
+#| include: false
+
+install.packages("systemfonts")
+install.packages("flextable")
+install.packages("officer")
+
+library(flextable)
+library(officer)
+
+tabela_atalhos <- flextable(atalhos)
+save_as_docx(tabela_atalhos, path = "atalhos.docx")
+
+tabela_apa <- flextable(atalhos) |>
+  theme_booktabs() |>
+  font(fontname = "Times New Roman", part = "all") |>
+  fontsize(size = 12, part = "all") |>
+  align(align = "center", part = "header") |>
+  align(align = "left", part = "body") |>
+  autofit()
+
+save_as_docx(
+  "Tabela 1. Atalhos" = tabela_apa,
+  path = "atalhos_APA.docx"
+)
+
+# melhorando a tabela
+tabela_apa <- tabela_apa |>
+  font(fontname = "Times New Roman", part = "all") |>
+  fontsize(size = 12, part = "all") |>
+  align(align = "center", part = "header") |>
+  align(align = "left", part = "body") |>
+  border_remove() |>
+  hline_top(part = "all", border = fp_border(width = 1)) |>
+  hline(part = "header", border = fp_border(width = 1)) |>
+  hline_bottom(part = "body", border = fp_border(width = 1)) |>
+  autofit()
+
+save_as_docx(
+  tabela_apa,
+  path = "atalhos_APA.docx"
+)
+```
+
+## Definir diretório de trabalho
+
+Para facilitar o trabalho com salvamento e recuperação de arquivos, é recomendável que se defina um diretório de trabalho, onde todos os arquivos referentes à análise de dados serão salvos.
+
+```{r}
+#| label: Definir diretório
+
+
+# para verificar o diretório atual, execute o comando: 
+getwd()
+
+# OBS.: se for necessário, navegue até o local desejado utilizando a aba "files"
+
+# defina sua pasta de trabalho utilizando a função: 
+# setwd("C:/Users/jmhbu/OneDrive/Documentos/R/R_basico/Intro_R")
+```
+
+## Principais operadores
+
+O R pode ser usado como calculadora...
+
+A tabela a seguir apresenta os principais operadores que usamos nos códigos em R.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+table_operadores <- data.frame(Operador = c("+","-","*","/",":","^","sqrt","==",
+                                            ">","<","<=",">=","!","&","|","c","$"),
+                               Descrição = c("Adição",
+                                             "Subtração",
+                                             "Multiplicação",
+                                             "Divisão",
+                                             "Sequência",
+                                             "Exponencial",
+                                             "Raiz",
+                                             "Igualdade",
+                                             "Maior que",
+                                             "Menor que",
+                                             "Menor ou igual",
+                                             "Maior ou igual",
+                                             "Não",
+                                             "E",
+                                             "Ou",
+                                             "Concatenar",
+                                             "Busca variáveis dentro de um objeto"))
+table_operadores
+```
+
+Obs.: o símbolo til "\~" também é usado em funções para separar variáveis dependentes de variáveis independentes.
+Por exemplo: `Amabilidade ~ Genero`.
+Nesse caso, a sintaxe pode ser traduzida como: o traço de amabilidade sofre efeito de gênero?
+
+Também se pode usar o ponto "." para definir que "todas as outras variáveis" serão empregadas.
+Isso quer dizer que descartadas as variáveis que estão cumprindo outra função, o "." pede que use todas as outras variáveis.
+
+Exercitando...
+
+```{r}
+#| label: Operadores matemáticos
+
+# operações matemáticas
+
+3+4
+5-2
+4*2
+9/3
+sqrt(9)
+2^3
+
+1:10
+10:1
+
+# 3 = 3
+3 == 3
+3 > 2
+3 < 2
+3 >= 2
+3 >= 3
+3 <= 2:5
+3 + 4 >= 14/2
+
+!3 == 5
+
+1 < 2 & 2 < 3
+
+1 == 2 | 2 < 3
+```
+
+## Operações lógicas
+
+Algumas palavras são reservadas no R para operações lógicas.
+As principais são TRUE, FALSE e NA.
+
+```{r}
+#| label: Operadores lógicos
+
+op_logicos <- data.frame("Operadores lógicos" = 
+                           c("NA","NaN","Inf","NULL","TRUE","FALSE"),
+                         Significados = 
+                           c("Not available - dado faltante/indiponível",
+                             "Not a number - indefinições matemáticas como 0/0,
+                             log(-1)",
+                             "Infinito - número muito grande, como 1/0 e
+                             10^310",
+                             "Representa ausência de objeto",
+                             "Condição é verdadeira",
+                             "Condição é falsa"))
+knitr::kable(op_logicos)
+```
+
+## Criando objetos
+
+Os objetos que podem ser criados no R são:
+
+-   listas
+-   vetores
+-   matrizes
+-   array
+-   dataframes
+
+Vamos definir os que mais usamos em nossas análises.
+
+### Lista
+
+**Lista** é uma estrutura que pode conter elementos de diferentes tipos, inclusive outras listas.
+É uma estrutura flexível que pode acomodar qualquer tipo de objeto R.
+
+```{r}
+#| label: Criação de listas
+
+
+minha_lista1 <- list("sujeitos","sexo",2023:2030,"escolaridade")
+class(minha_lista1)
+
+# minha_lista é um objeto do tipo lista, que guarda informações de diferentes tipos: sujeitos, sexo, ano, escolaridade...
+# essas informações foram salvas num objeto do tipo lista, que pode ser visto no environment
+# informações não-numéricas aparecem entre "aspas" para o R reconhecer cada elemento dentro do objeto
+# [[1]] significa "coluna 1"
+# [1] significa "informação 1"
+
+minha_lista2 <- list(hortifrutis = c("alface","banana","maça"),
+                     carnes = c("frango","carne moída"),
+                     bebidas = c("suco","vinho"))
+
+# também é possível nomear as linhas de uma lista
+# esse recurso é útil para salvar as opções de resposta dentro de uma pergunta num questionário
+minha_lista3 <- list(sexo=c("masculino","feminino","não-binário"),
+                    escolaridade=c("fundamental","médio","superior"),
+                    estado_civil=c("solteiro/a","casado/a","separado/a"),
+                    renda=c("até 1 salário mínimo","entre 1 e 3 salários mínimos","mais de 3 salários mínimos"))
+minha_lista3
+minha_lista3[2] # mostra o conteúdo da segunda linha
+minha_lista3$escolaridade[2]
+```
+
+### Vetor
+
+**Vetor**: é uma coleção de informações ou elementos **da mesma natureza**.
+Por exemplo, as variáveis que costumamos colocar nas colunas dos nossos bancos de dados são **vetores**.
+
+```{r}
+#| label: Criação de vetores
+
+meu_vetor <- c("masculino","feminino","feminino","masculino","feminino")
+is.list(meu_vetor)
+is.vector(meu_vetor)
+is.data.frame(meu_vetor)
+
+# meu_vetor é um objeto do tipo vetor porque contem informações da mesma natureza. Poderiam ser informações sobre o sexo dos sujeitos em um  banco de dados
+
+vetor1 <- c(1, 5, 3, -10)
+vetor2 <- c("a", "b", "c", "d")
+
+class(vetor1)
+class(vetor2)
+
+# Se tentarmos misturar duas classes, o R vai apresentar um comportamento conhecido como coerção. Ele vai impor uma das classes aos objetos. Por exemplo:
+
+vetor3 <- c(1, 2, "a")
+
+# O R cria um vetor, mas impõe que todos os dados sejam da mesma natureza, transformando os números em caracteres.
+vetor3
+class(vetor3)
+is.vector(vetor3)
+
+vetor1[2]
+```
+
+### Dataframe
+
+**Dataframes** são uma das estruturas de dados mais usadas no R.
+Eles são semelhantes a tabelas em um banco de dados.
+Um dataframe é uma lista de vetores de igual comprimento, em que cada vetor representa uma coluna e compartilha o mesmo número de linhas.
+Os dataframes podem conter colunas de diferentes tipos de dados.
+Nossos bancos de dados no R recebem a denominação de dataframes.
+
+```{r}
+#| label: Criação de dataframes
+
+# criar vetor sexo, em que 0 é masculino e 1 é feminino.
+sexo <- c(0,1,0,0,1)
+is.vector(sexo)
+
+# pode-se criar um vetor semelhante, mas com letras
+# quando uma informação textual for inserida num objeto, ela tem que ir entre aspas.
+
+sexo_cod <- c("m","f","m","m","f") # vetor com informações sobre sexo
+
+# uma alternativa a isso é transformar a variável sexo em uma variável fator
+
+sexo <- factor(sexo, levels = c(0,1), labels = c("masculino", "feminino"))
+
+idade <- c(25,32,78,12,NA) # vetor com informações de idade
+
+# A partir dos dois vetores anteriores é possível criar um dataframe (conjunto de vetores)
+df <- data.frame(sexo_cod,idade)
+
+# acrescentando a variável escolaridade
+escolaridade <- c("superior","medio","fundamental","fundamental","medio")
+
+cbind(df,escolaridade) # cbind() é uma função da base que anexa colunas.
+df <- cbind(df,escolaridade) 
+
+# acrescentando a variável id
+id <- 1:5
+df <- cbind(id,df)
+
+# Se quiser inserir um "s" antes do número de cada sujeito, podemos usar a função paste(), que concatena duas partes da informação que constar em uma coluna. Essa função diz: concatene um s com valores de 1 a 5, separados por nada.
+
+paste("s",1:5,sep="_")
+id <- paste("s",1:5,sep="")
+
+# uma forma de salvar os resultados em uma nova variável diretamente no banco de dados é usando a função $ (cifrão). Quando digitamos o $ em seguida ao nome do objeto (dataframe), o R abre, automaticamente, abre uma janela de opções com as variáveis que existem no dataframe. Ao selecionar "id", por exemplo, os novos dados serão salvos SOBRE os dados existentes. Caso se queira CRIAR uma nova variável, basta digitar o nome de uma variável inexistente no dataframe.
+
+df$id <- paste("s",1:5,sep="")
+
+# se quiser inserir um novo sujeito no dataframe
+
+suj6 <- list(id="s6",sexo_cod="m",idade=34,escolaridade="superior")
+suj6 <- list("s6","m",34,"superior")
+
+
+rbind(df,suj6)
+
+df <- rbind(df,suj6)
+df
+# inserir a variável renda
+# seq(from,to,by,lenth)
+
+df$renda <- seq(1000, by=500,length=6)
+# ou
+#renda <- seq(1000, by=500,length=6)
+#df <- cbind(df,renda)
+
+# inserir uma variável "bonus", referente a um abono de 500 reais a cada sujeito.
+# usamos a função rep(), que é semelhante à variável seq(), sem o argumento "by", porque a informação é sempre a mesma
+df$bonus <- rep(500,6)
+
+# ou
+#bonus <- rep(500,6)
+#df <- cbind(df,bonus)
+
+# calcular "renda total", que é a soma das variáveis renda e bonus
+df$"renda total" <- df$renda + df$bonus
+
+# inserir a variável "Estado Civil"
+df$"estado civil" <- c("casado/a","solteiro/a","viúvo/a","solteiro/a","casado/a","casado/a")
+
+df
+```
+
+### Função `data.frame`
+
+```{r}
+#| label: função dataframe
+
+df <- 
+data.frame(id = c('s1','s2','s3','s4','s5','s6'),
+           sex_cod = c('m','f','m','m','f','m'),
+           idade = c(25,32,78,12,NA,34),
+           escolaridade = c('superior','medio','fundamental','fundamental','medio','superior'),
+           renda = c(1000,1500,2000,2500,3000,3500),
+           bonus = c(500,500,500,500,500,500),
+           renda_total = c(1500,2000,2500,3000,3500,4000),
+           estado_civil = c('casado/a','solteiro/a','viúvo/a','solteiro/a','casado/a','casado/a'))
+```
+
+# Funções para visualização de dados
+
+```{r}
+names(df)
+str(df)
+head(df)
+tail(df)
+ncol(df)
+nrow(df)
+view(df)
+
+unique(df$`estado civil`)
+unique(df$idade)
+df_copia <- df
+df <- df_copia
+```
+
+# Exercícios 1
+
+1.  Pense em um número de 1 a 10. Verifique, usando o R, se esse número está entre 3 e 8 (incluindo o 3 e o 8).
+
+```{r}
+#| code-fold: true
+
+# eu pensei no número 5
+5 >= 3 & 5 <= 8
+```
+
+Verifique, usando o R, se esse número **não está** entre 3 e 8 (excluindo o 3 e o 8).
+
+```{r}
+#| code-fold: true
+
+!5 > 3 | !5 < 8
+
+5 < 3 | 5 > 8
+```
+
+Multiplique o número que você escolheu por 9.
+Pegue o resultado dessa multiplicação e some os algarismos (por exemplo, se deu 16, a soma dos algarismos é 1 + 6 = 7).
+Subtraia 5 desse resultado.
+Quanto deu?
+
+ok, agora transforme esse resultado na letra correspondente do abecedário (por exemplo, a=1, b=2...).
+Pense num país que comece com essa letra!
+Agora, pegue a 5ª letra desse país e pense num animal que comece com essa letra.
+**Veja a resposta no final.**
+
+```{r}
+#| code-fold: true
+
+# Pensei no número 5
+5 * 9
+4 + 5
+9 - 5
+
+nchar("Dinamarca") # retorna o número de caracteres
+
+substr("dinamarca",5,5) # retorna um pedaço da palavra, nesse caso, de 5 a 5, somente a 5ª letra.
+```
+
+2.  Os quatro candidatos à presidência da república mais bem colocados nas pesquisas eleitorais são Lula (homem, 76 anos, Partido dos Trabalhadores), Bolsonaro (homem, 67 anos, Partido Liberal), Ciro Gomes (homem, 64 anos, Partido Democrático Trabalhista) e Simone Tebet (mulher, 52 anos, Movimento Democrático Brasileiro). Lula e Bolsonaro já exerceram a presiência da república, enquanto Ciro e Simone ainda não. Com essas informações, monte um dataframe chamdo brasil2022 contendo cinco colunas: id, nome, sexo, idade, partido e se exerceu a presidência anteriormente (sim ou não).
+
+```{r}
+#| code-fold: true
+
+brasil2022 <- 
+data.frame(id = paste("c",1:4,sep = ""),
+           nome = c("Lula","Bolsonaro","Ciro","Simone"),
+           sexo = c("masculino","masculino","masculino","feminino"),
+           idade = c(76,67,64,52),
+           partido = c("PT","PL","PDT","MDB"),
+           "já foi presidente?" = c("sim","sim","não","não"))
+
+id <- paste("c",1:4,sep = "")
+nome <- c("Lula","Bolsonaro","Ciro","Simone")
+
+brasil2022 <- data.frame(id,nome)
+brasil2022$sexo <- c("masculino","masculino","masculino","feminino")
+brasil2022$idade <- c(76,67,64,52)
+brasil2022$partido <- c("PT","PL","PDT","MDB")
+brasil2022$"já foi presidente?" <- c("sim","sim","não","não")
+
+
+# Idade <- c(76,67,64,52)
+# 
+# cbind(brasil2022,Idade)
+```
+
+3.  Quais são as classes das variáveis desse dataframe?
+
+```{r}
+#| code-fold: true
+ 
+str(brasil2022)
+class(brasil2022)
+class(brasil2022$idade)
+```
+
+4.  Acrescente ao dataframe `brasil2022` uma linha com as informações do candidato Sílvio Santos, que é homem, tem 91 anos, nunca foi presidente anteriormente e não se tem informação sobre seu partido de afiliação.
+
+```{r}
+#| code-fold: true
+
+silviosantos <- list("c5","Silvio Santos","masculino",91,NA,"não")
+brasil2022 <- rbind(brasil2022,silviosantos)
+```
+
+5.  Transforme as variáveis sexo e se já foi presidente em fatores.
+
+```{r}
+#| code-fold: true
+
+brasil2022$sexo <- 
+factor(brasil2022$sexo, levels = c("masculino","feminino"), labels = c("m", "f"))
+
+brasil2022$`já foi presidente?` <- 
+factor(brasil2022$`já foi presidente?`, levels = c("não","sim"), labels = c("n", "s"))
+
+str(brasil2022)
+```
+
+6.  Se sua resposta foi macaco, você errou, porque na Dinamarca não tem macacos!!! Mas parabéns, você realizou as contas corretamente no R.
+
+# Funções para manipulação de dados
+
+Muitas vezes, precisamos manipular os dados de um dataframe, seja para renomear colunas, selecionar linhas ou colunas, adicionar variáveis ou sujeitos, entre outras.
+Vejamos algumas delas.
+
+## Alteração do nome de variáveis
+
+```{r}
+#| label: Rename
+
+# Alterar o nome da variável "sexo_cod"
+saveRDS("df","df.rds")
+
+df <- rename(df,sexo = "sexo_cod")
+
+# Para se alterar o nome de muitas variáveis, por exemplo, substituindo os espaços 
+# em branco (" ") por underline ("_"), pode-se usar a função gsub, da base do R.
+
+names(df) <- gsub(" ","_",names(df))
+
+# essa função diz: vá nos nomes das variáveis de df e substitua os espaços em branco (" ") por underline ("_") 
+```
+
+## Selecionar linhas e colunas
+
+```{r}
+# Selecionar linhas e colunas: dataframe[linhas,colunas]
+
+df[1:3, ] # seleção das três primeiras linhas
+df[ ,1:3] # seleção das três primeiras colunas 
+df[1:3,1:3] # seleção das três primeiras linhas e das três primeiras colunas
+
+# Se que quisermos selecionar as linhas 1, 3 e 6, como fazemos?
+df[c(1,3,5), ]
+
+# se quisermos selecionar as colunas id, idade e renda_total
+df[ ,c(1,3,7)]
+df[ ,c("id","idade","renda_total")]
+df[ ,c("renda_total","idade","id")]
+```
+
+## Filtrar linhas inteiras
+
+```{r}
+# Selecionar somente as linhas dos participantes do sexo masculino
+df[df$sexo == "m",  ]
+
+# Selecionar somente as linhas dos participantes do sexo masculino com renda_total maior ou igual a 2500 reais.
+df[df$sexo == "m" & df$renda_total >= 2500, ]
+```
+
+## Alterar o conteúdo dentro de uma variável
+
+```{r}
+# Alterar o conteúdo dentro de uma variável
+
+df$sexo[df$sexo == "f"] <- 0
+df$sexo[df$sexo == "m"] <- 1
+```
+
+## Alterar o formato de variáveis
+
+```{r}
+# visualisar que a variável sexo está como character, mas também foi possível perceber que outras variáveis também não estão no formato ideal. Vamos acertar todas elas.
+
+str(df)
+
+# mudar variável sexo para factor (note que está como caractere)
+df$sexo <- as.numeric(df$sexo)
+df$sexo <- as.factor(df$sexo) # factor é uma variável nominal
+# df$sexo <- c("m","f","m","m","f","m")
+
+# df$idade <- as.numeric(df$idade)
+df$escolaridade <- as.factor(df$escolaridade)
+```
+
+## Atribuir níveis às variáveis de fator
+
+```{r}
+# atribuir levels aos valores 0 e 1 da variável sexo
+levels(df$sexo) <- c("feminino","masculino")
+levels(df$escolaridade) <- c("fundamental","médio","superior")
+str(df)
+```
+
+## Alterar a ordem das variáveis no dataframe
+
+```{r}
+# Alterar a ordem das variáveis no banco de dados
+df <- df[ ,c("id","sexo","idade","escolaridade","estado_civil",
+             "renda","bonus","renda_total")]
+```
