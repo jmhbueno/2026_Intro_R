@@ -816,7 +816,7 @@ Para isso, use o código de importação abaixo:
 #| label: baixar arquivo
 
 # criar um objeto com a url onde do arquivo
-url  <-  "https://raw.githubusercontent.com/jmhbueno/IntroR_aula/09435ea3036667d756bbc7aef4cd4a6ebdfa4b39/imdb1000.rds"
+url <- "https://raw.githubusercontent.com/jmhbueno/2026_Intro_R/main/imdb1000.rds"
 
 download.file(url = url, destfile = "imdb1000.rds", mode = "wb")
 

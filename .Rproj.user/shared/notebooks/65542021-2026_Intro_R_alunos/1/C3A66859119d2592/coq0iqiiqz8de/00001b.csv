@@ -1,0 +1,10 @@
+"0","download.file(url = url, destfile = ""imdb1000.rds"", mode = ""wb"")
+"
+"2","tentando a URL 'https://raw.githubusercontent.com/jmhbueno/2026_Intro_R/main/imdb1000.rds'
+"
+"2","Content type 'application/octet-stream'"
+"2"," length 161539 bytes (157 KB)
+"
+"2","downloaded 157 KB
+
+"
