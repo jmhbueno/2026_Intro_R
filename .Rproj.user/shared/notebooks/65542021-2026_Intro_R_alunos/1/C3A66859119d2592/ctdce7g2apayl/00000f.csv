@@ -1,4 +1,0 @@
-"0","#| code-fold: true"
-"0",""
-"0","silviosantos <- list(""c5"",""Silvio Santos"",""masculino"",91,NA,""não"")"
-"0","brasil2022 <- rbind(brasil2022,silviosantos)"

@@ -1,3 +1,0 @@
-"0",""
-"0","# Se que quisermos selecionar as linhas 1, 3 e 6, como fazemos?"
-"0","df[c(1,3,5), ]"

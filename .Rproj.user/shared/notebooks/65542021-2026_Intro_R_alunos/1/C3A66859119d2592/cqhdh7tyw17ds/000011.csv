@@ -1,7 +1,0 @@
-"0","#| label: alterar conteúdo de variável"
-"0",""
-"0",""
-"0","# Alterar o conteúdo dentro de uma variável"
-"0",""
-"0","df$sexo[df$sexo == ""f""] <- 0"
-"0","df$sexo[df$sexo == ""m""] <- 1"

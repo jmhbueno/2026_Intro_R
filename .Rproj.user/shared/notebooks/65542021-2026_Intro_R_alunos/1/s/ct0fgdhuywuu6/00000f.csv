@@ -1,7 +1,0 @@
-"0","library(readr)
-library(readxl)
-library(haven)
-library(tideiverse)
-"
-"2","Error in library(tideiverse) : não há nenhum pacote chamado ‘tideiverse’
-"

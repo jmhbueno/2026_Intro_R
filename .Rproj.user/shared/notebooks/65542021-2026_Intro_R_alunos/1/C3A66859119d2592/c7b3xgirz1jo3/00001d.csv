@@ -1,6 +1,0 @@
-"0","#| label: selecionar"
-"0",""
-"0",""
-"0","# Selecionar linhas e colunas: dataframe[linhas,colunas]"
-"0",""
-"0","df[1:3, ] # seleção das três primeiras linhas"
