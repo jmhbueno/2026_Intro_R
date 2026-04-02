@@ -979,30 +979,40 @@ wp2[order(wp2$World.Population.Percentage, decreasing = TRUE),]
 Muitas vezes é necessário combinar arquivos.
 Existem muitas formas de fazer isso no R.
 
-```{r include=FALSE}
-# importar planilha para o objetivo variables
-# df_copia1 <- df
-# df <- df_copia1
+```{r}
+#| label: importar arquivo
+
+# criar um objeto com a url onde do arquivo
+link_vr <- "https://raw.githubusercontent.com/jmhbueno/2026_Intro_R/main/Variables.xlsx"
+
+# Importar o arquivo do githug para o computador (fora do R)
+download.file(
+  url = link_vr,
+  destfile = "Variables.xlsx",
+  mode = "wb")
+
+# importar planilha para dentro do R
 variables <- read_xlsx("Variables.xlsx")
 
-# Atualização da cópia de segurança
-df_copia <- df
+# visualizar o arquivo importado
+str(variables)
 ```
 
-Nesse caso, temos o dataframe `variables`, com a informação de cinco variáveis dos mesmos sujeitos que constam no dataframe `df`.
-Então, gostaríamos de juntar esses dois dataframes.
-Para isso podemos usar duas funções.
+Como se pode observar, dataframe `variables` contém 5 variáveis (colunas) com dados de 6 sujeiros (linhas).
+Essas informações são dos mesmos sujeitos que constam no dataframe `df`.
+Então, gostaríamos de juntar esses dois dataframes (df e variables).
+Para isso podemos usar duas funções:
 
 ```{r}
+#| label: juntar arquivos
+
 # Juntar a planilha importada no dataframe df
-saveRDS(df,"df.rds")
 df <- cbind(df,variables)
 ```
 
 ## Lidando com dados ausentes
 
 A função `na.omit` deleta as informações de uma linha inteira que contenha ao menos uma informação ausente.\
-
 A função `na.exclude` faz quase a mesma coisa, mas apenas omite a linha e acaba reportando alguns resultados, como resíduos, por exemplo, em análises de regressão.
 Além disso, também preserva o número de linhas do dataframe.
 Isso é importante em certas ocasiões que se deseja manter constante o número de linhas de um dataframe para coincidir com outro dataframe, por exemplo.
@@ -1017,7 +1027,7 @@ Esse argumento é o `na.rm`, que é um argumento lógico, ou seja deve ser apres
 Veja a aplicação desse argumento na função `mean()`, utilizada para calcular médias.
 
 ```{r}
-# mean(df$idade)    # essa função acaba não rodando, porque entre os dados de idade existe um NA
+# mean(df$idade)    # essa função não funciona, porque existe um NA na coluna idade
 mean(df$idade, na.rm = TRUE) # dessa forma, conseguimos rodar a análise.
 ```
 
@@ -1030,10 +1040,12 @@ se ela não ocorrer, faça aquilo.
 Exemplos:
 
 ```{r}
+#| label: ifelse simples
+
 # se quisermos classificar a renda em dois grupos: menor igual a R$2000 e maior que R$2000, podemos usar a função ifelse()
 # ifelse(condição,se sim, se não)
-# traduzindo....
-# observe se, na variável renda, o valor é menor ou igual a 2000
+# traduzindo...
+# observe se, na variável renda, se o valor é menor ou igual a 2000
 # se for, então atribua 1
 # se não for, então atribua 2.
 
@@ -1042,14 +1054,20 @@ ifelse(df$renda <= 2000,1,2)
 # Se quisermos salvar esses dados como uma coluna do df...
 df$renda_cod <- ifelse(df$renda <= 2000,1,2)
 
-# se quisermos criar uma coluna atribuindo 1 para homens e 0 para os demais.
-ifelse(df$sexo == "masculino",1,0)
+```
+
+```{r}
+#| label: ifelse combinado
 
 # se quisermos identificar homens com escolaridade fundamental
 ifelse(df$sexo == "masculino" & df$escolaridade == "fundamental",1,0)
 
 # se quisermos identificar homens com escolaridade fundamental OU pessoa casadas.
-ifelse(df$sexo == "masculino" & df$escolaridade == "fundamental" | df$estado_civil == "casado/a",1,0)
+# ifelse(df$sexo == "masculino" & df$escolaridade == "fundamental" | df$estado_civil == "casado/a",1,0)
+```
+
+```{r}
+#| label: ifelse dentro de ifelse
 
 # se quisermos criar uma nova variável atribuindo 1 para solteiro, 2 para casado e 3 para viúvo... tínhamos visto o formato
 
@@ -1059,6 +1077,12 @@ ifelse(df$sexo == "masculino" & df$escolaridade == "fundamental" | df$estado_civ
 
 ifelse(df$estado_civil == "solteiro/a",1,
        ifelse(df$estado_civil == "casado/a",2,3))
+
+
+```
+
+```{r}
+#| label: ifelse para inversão
 
 ifelse(df$v1 == 1,5,
        ifelse(df$v1 == 2,4,
@@ -1084,36 +1108,43 @@ A seguir, veremos como fazer isso, começando pela **exportação de arquivos**.
 ## Exportação de arquivos usando função da base
 
 ```{r}
+#| label: rds
 
-saveRDS(df,"df.rds") # formato reconhecido pelo R
+# formato reconhecido pelo R
+saveRDS(df,"df.rds")
 ```
 
 ### Usando funções do pacote utils
 
 ```{r}
+#| label: pacote utils
+names(df)
+write.csv(df,               # dataframe a ser exportado
+          "df1.csv",        # nome a ser dado ao dataframe exportado
+          sep = ",",        # caractere que separa as colunas
+          na = "NA",        # como codificar dados faltantes
+          dec = ".",        # que caractere usar para separar casas decimais
+          col.names = TRUE) # informar se há (TRUE) ou não (FALSE) nome das colunas
 
- write.csv(df,               # dataframe a ser exportado
-           "df1.csv",         # nome a ser dado ao dataframe exportado
-           sep = ",",         # caractere que separa as colunas
-           na = "NA",         # como codificar dados faltantes
-           dec = ".",         # que caractere usar para separar casas decimais
-           col.names = TRUE)  # informar se Há (TRUE) ou não (FALSE) nome das colunas no dataframe
-
- write.csv2(df,              # semelhante ao comando anterior, mas assumindo sep = ";" e dec = ","
+ write.csv2(df,             # semelhante ao anterior, mas assume sep = ";" e dec = ","
            "df1.csv",
            sep = ";",
            na = "NA",
            dec = ",",
            col.names = TRUE)
 
-### OBS.: Essas funções acima podem ser resumidas para...
-write.csv(df, "df.csv")
+#  A função .csv separa colunas com vírgula e decimais com ponto
+write.csv(df, "df.csv") 
+
+# Afunção .csv2 separa colunas com ponto-e-vírgula e decimanis com vírgula (Brazil)
 write.csv2(df, "df.csv")
 ```
 
 ### Usando funções do pacote readr
 
 ```{r}
+#| label: pactoe readr
+
 # Carregar os pacotes readr
 # install.packages("readr")
 library(readr)
@@ -1137,12 +1168,7 @@ write_excel_csv(
   col_names = TRUE,
   delim = ",")
 
-write_excel_csv2(
-  df,
-  "df.csv",
-  na = "NA",
-  col_names = TRUE,
-  delim = ";")
+writexl::write_xlsx(df,"df.xlsx")
 ```
 
 ## Importação de arquivos
@@ -1150,6 +1176,9 @@ write_excel_csv2(
 ### Importando arquivos em `.csv` com o pacote `utils`
 
 ```{r}
+#| label: read.csv
+
+
 # Importando arquivos em .csv
 
 ## Usando o pacote utils
@@ -1162,20 +1191,12 @@ read.csv2("df.csv",             # nome do arquivo a ser importado (OBS. deve est
           encoding = "UTF-8")   # usar codificação UTF-8 para que os acentos, etc. venham de forma correta.
 ```
 
-### Importando arquivos em `.csv` com o pacote `readr`
-
-```{r}
-## Usando o pacote readr
-
-# read_csv2("df.csv", col_names = TRUE, na = "NA", skip_empty_rows = TRUE)
-
-# OBS: essa função não estava funcionando em 17/09/2022. Não consegui descobrir porque. Então desliguei a função para poder prosseguir.
-
-```
-
 ### Importando arquivos em `.xls` e `.xlsx` (Excel) com o pacote `readxl`
 
 ```{r}
+#| label: readxl
+
+
 ## Usando o pacote readxl para importar arquivos em excel
 library(readxl)
 read_excel("df.xlsx", col_names = TRUE)
@@ -1184,10 +1205,10 @@ read_excel("df.xlsx", col_names = TRUE)
 ### Importando arquivos em `.sav` (SPSS) com o pacote `haven`
 
 ```{r}
+#| label: haven
+
+
 ## Usando o pacote haven para importar arquivos do SPSS
-
-pacman::p_load(haven)
-
 read_sav("df.sav")
 ```
 
@@ -1206,13 +1227,24 @@ Esse é um banco de dados estrangeiro, está codificado no sistema europeu.
 Use a função `read_excel()` do pacote `readxl` para importá-lo e salve-o como um objeto do R (dataframe) chamado `big_five`.
 
 ```{r}
-# Você deve ter instalado o pacote readxl em nossa última aula.
-# se ainda não instalou, instale-o utilizando o comando install.packages("readxl")
-# Depois, não se esqueça de ativar o pacote com a função library(readxl)
+#| label: baixar big_five.xlsx
 
-big_five <- read_excel("big_five.xlsx")
+# criar um objeto com a url onde do arquivo
+link_bf <- 
+  "https://raw.githubusercontent.com/jmhbueno/2026_Intro_R/main/big_five.xlsx"
 
-# ao rodar o comando, o arquivo será importando e salvo como dataframe no R. Você verá um objeto com esse nome, no quadro superior à direita.
+# Importar o arquivo do githug para o computador (fora do R)
+download.file(
+  url = link_bf,
+  destfile = "big_five.xlsx",
+  mode = "wb")
+
+# importar planilha para dentro do R
+big_five <- read_xlsx("big_five.xlsx")
+
+# visualizar o arquivo importado
+str(big_five)
+
 ```
 
 ### Informações sobre o banco de dados
