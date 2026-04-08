@@ -815,25 +815,6 @@ str(df)
 
 # Exercícios 2
 
-```{r}
-#| label: arquivo para alunos
-#| include: false
-
-# Gerando um arquivo imdb em rds para os alunos
-
-imdb1000 <- read.csv("imdb_top_1000.csv",encoding = "UTF-8")
-
-# Codigo abaixo para limpar variáveis de texto
-imdb1000 <- imdb1000[,-c(1,8)]
-
-# Separar a variável gênero em três variáveis (Genre1, Genre2 e Genre3)
-imdb1000 <- 
-  imdb1000 %>%
-  separate(Genre, sep = ",", into = c("Genre1","Genre2","Genre3"))
-
-saveRDS(imdb1000,"imdb1000.rds")
-```
-
 O *Internet Movie Database*, conhecido popularmente como IMDb, é uma base de dados de informação sobre cinema TV, música e games pertencente à Amazon.
 Vamos trabalhar com um arquivo que apresenta diversas informações (variáveis) de 1000 filmes.
 Para isso, temos que seguir dois passos:
