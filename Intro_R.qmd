@@ -119,7 +119,7 @@ Para baixar este script completo, execute o comando a seguir:
 
 # criar um objeto com a url onde do arquivo
 link_script <- 
-  "https://raw.githubusercontent.com/jmhbueno/2026_Intro_R/main/2026_Intro_R.qmd"
+  "https://raw.githubusercontent.com/jmhbueno/2026_Intro_R/main/Intro_R.qmd"
 
 
 # Importar o arquivo do githug para o computador (fora do R)
